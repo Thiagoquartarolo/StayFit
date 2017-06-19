@@ -9,10 +9,10 @@ module.exports = function(app){
     //Set sessions and cookie parser
     app.use(cookieParser());
     app.use(session({
-    secret: process.env.SECRET, 
-    cookie: { maxAge: 60000 },
-    resave: false,    //Forces the session to be saved back to the store
-    saveUninitialized: false  //Dont save unmodified
+        secret: process.env.SECRET, 
+        cookie: { maxAge: 60000 },
+        resave: false,    //Forces the session to be saved back to the store
+        saveUninitialized: false  //Dont save unmodified
     }));
     app.use(flash());
 

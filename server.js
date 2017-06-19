@@ -13,8 +13,8 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
-require('./app/routes/appRoutes')(app);
 require('./middlewares')(app);
+require('./app/routes/appRoutes')(app);
   
 //Start the server
 app.listen(port, () => {

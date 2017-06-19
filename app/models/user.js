@@ -6,5 +6,6 @@ module.exports = mongoose.model('User', {
     age: {type: Number, required: true },
     email: {type: String, required: true },
     password: {type: String, required: true },
+    terapeutId: {type: String},
     isAdmin: {type: Boolean, required: true }
 });
