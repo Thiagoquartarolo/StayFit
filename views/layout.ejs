@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>StayFit APP</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!--js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/login.js"></script>
+
+</head>
+
+<body>
+
+    <!-- header -->
+    <header id="site-header">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="">StayFit - App</a>
+                </div>
+
+                <% if (!isLoged) { %>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="" data-toggle="modal" data-target="#modalLogin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+                    <% }else{ %>
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listar<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="">Pacientes</a></li>
+                                    <li><a href="">Patologias</a></li>
+                                    <li><a href="">Cardapios</a></li>
+                                    <li><a href="">Grupos Alimentares</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href=""><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        </ul>
+                        <% } %>
+
+            </div>
+        </nav>
+    </header>
+
+    <!-- main -->
+    <main id="site-main">
+        <div class="container">
+            <%- body %>
+        </div>
+    </main>
+
+    <!-- footer -->
+    <footer id="site-footer">
+        Copyright &copy; 2017
+    </footer>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalLogin" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Bem vindo ao StayFit</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd">Senha:</label>
+                            <input type="password" class="form-control" id="pwd">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
+                    <a href="/login" class="btn btn-success">Ok</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
