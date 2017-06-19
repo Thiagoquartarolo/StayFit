@@ -1,17 +1,19 @@
 const User = require('../models/user');
 const Def = require('../controllers/defaultController');
-var LocalStorage = require('node-localstorage').LocalStorage;
-var localStorage = LocalStorage('./scratch');
+const LocalStorage = require('node-localstorage').LocalStorage;
+const localStorage = LocalStorage('./scratch');
+
 
 module.exports = {
     getUsers: getUsers,
+    saveUser: saveUser,
     seedUsers: seedUsers
 }
 
 function getUsers(req, res) {
     try {
         var isLoged = localStorage.getItem('isLoged');
-        var user = localStorage.getItem('user');
+        var userLocalStorage = JSON.parse(localStorage.getItem('user'));
 
         if (isLoged) {
             User.find({}, (err, pacients) => {
@@ -20,10 +22,9 @@ function getUsers(req, res) {
                     return;
                 }
 
-                // return a view with data
                 res.render('pages/user/list', {
                     pacients: pacients,
-                    user: JSON.parse(user),
+                    user: userLocalStorage,
                     isLoged: isLoged,
                     success: 0,
                     error: 0,
@@ -34,6 +35,30 @@ function getUsers(req, res) {
 
     } catch (exc) {
         res.sendStatus(404).send(exc);
+    }
+}
+
+function saveUser(req, res) {
+    if (isValid) {
+        var userLocalStorage = JSON.parse(localStorage.getItem('user'));
+
+        const user = new User({
+            name: req.body.name,
+            lastname: req.body.lastName,
+            age: req.body.age,
+            email: req.body.email,
+            password: req.body.password,
+            terapeutId: userLocalStorage._id,
+            isAdmin: false,
+        });
+
+        user.save((err) => {
+            if (err)
+                throw err;
+
+        });
+
+        res.redirect('/users');
     }
 }
 
@@ -53,4 +78,25 @@ function seedUsers(req, res) {
 
     //Seeded!
     res.send('Database seeded!');
+}
+
+function isValid(req, res) {
+    req.checkBody('name', 'Campo nome é obrigatório.').notEmpty();
+    req.checkBody('lastName', 'Campo sobrenome é obrigatório.').notEmpty();
+    req.checkBody('age', 'Campo idade é obrigatório.').notEmpty().isInt();
+    req.checkBody('email', 'Campo e-mail é obrigatório.').notEmpty();
+    req.checkBody('password', 'Campo senha é obrigatório.').notEmpty();
+
+    // if there are errors, redirect and save errors to flash
+    const errors = req.validationErrors();
+    if (errors) {
+        req.flash('errors', errors.map(err => err.msg));
+        return res.render('default', {
+            isLoged: false,
+            success: 0,
+            error: 0,
+            validations: errors
+        });
+    }
+    return true;
 }

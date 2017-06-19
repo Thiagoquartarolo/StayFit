@@ -59,8 +59,8 @@ function logout(req, res) {
 }
 
 function isValid(req, res) {
-    req.checkBody('email', 'Campo E-mail é obrigatório.').notEmpty();
-    req.checkBody('password', 'Campo Senha é obrigatório.').notEmpty();
+    req.checkBody('email', 'Campo e-mail é obrigatório.').notEmpty();
+    req.checkBody('password', 'Campo senha é obrigatório.').notEmpty();
 
     // if there are errors, redirect and save errors to flash
     const errors = req.validationErrors();

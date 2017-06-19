@@ -1,28 +1,94 @@
-<div class="jumbotron text-center">
-    <h1>All Events</h1>
+<div class="col-md-12 content">
+    <div class="row">
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-image:none">
+            Lista de Pacientes
+            <div class="pull-right">
+                <div class="btn-group">
+                    <input type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modNew" value="Novo Paciente" />
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="dataTable_wrapper">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Idade</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <% for (var item of pacients) { %>
+                            <tr>
+                                <td>
+                                    <%= item.name%>
+                                        <%= item.lastname %>
+                                </td>
+                                <td>
+                                    <%= item.email %>
+                                </td>
+                                <td>
+                                    <%= item.age %>
+                                </td>
+                                <td>
+                                    <a href="/" class="btn btn-sm btn-success">Visualizar</a>
+
+                                    <a href="/" class="btn btn-sm btn-primary">Editar</a>
+
+                                    <a href="/" class="btn btn-sm btn-danger">Excluir</a>
+                                </td>
+                            </tr>
+                            <% } %>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<table class="table table-bordered table-hover table-striped">
-    <thead>
-        <tr>
-            <th>User Name</th>
-            <th>Age</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        
-        <% for (var item of pacients) { %>
-            <tr>
-                <td><%= item.name %></td>
-                <td><%= item.age %></td>
-                <td>
-                    <a href="/" class="btn btn-sm btn-primary">View</a>
-                    <a href="/" class="btn btn-sm btn-primary">Edit</a>
-                    <a href="/" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
-        <% } %>
 
-    </tbody>
-</table>
+<!-- Modal -->
+<div class="modal fade" id="modNew" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Dados do paciente</h4>
+            </div>
+            <form action="/users/save" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" class="form-control" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Sobrenome</label>
+                        <input type="text" class="form-control" name="lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Idade</label>
+                        <input type="number" class="form-control" name="age">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail:</label>
+                        <input type="email" class="form-control" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

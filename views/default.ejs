@@ -1,17 +1,3 @@
-<% if (error.length > 0) { %>
-    <div class="alert alert-danger"><%= error %></div>
-<% }else if (success.length > 0) { %>
-    <div class="alert alert-success"><%= success %></div>
-<% } else if (validations.length > 0) {%>
-    <div class="alert alert-warning">
-    <% for (var item of validations) { %>
-        <tr>
-            <td><%= item.msg %></td><br />
-        </tr>
-    <% } %>
-    </div>
-<% } %>
-
 <div class="jumbotron text-center">
     <h1>Stay Fit APP</h1>
 </div>
