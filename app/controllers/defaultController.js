@@ -1,32 +1,21 @@
 const User = require('../models/user');
-var LocalStorage = require('node-localstorage').LocalStorage;
-var localStorage = new LocalStorage('./scratch');
 
 module.exports = {
-    getValues: getValues,
     validateLogin: validateLogin,
+    getValues: getValues,
     logout: logout
 }
 
-function getValues(req, res) {
-    res.render('default', {
-        isLoged: false,
-        success: 0,
-        error: 0,
-        validations: 0
-    });
-}
-
 function validateLogin(req, res) {
+    
     if (isValid(req, res)) {
+
         User.findOne({
             email: req.body.email,
             password: req.body.password
         }, (err, user) => {
             if (user != null) {
-                localStorage.setItem('isLoged', true);
-                localStorage.setItem('user', JSON.stringify(user));
-
+                req.session.user = user;
                 res.render('default', {
                     isLoged: true,
                     user: user,
@@ -35,8 +24,6 @@ function validateLogin(req, res) {
                     validations: 0
                 });
             } else {
-                localStorage.setItem('isLoged', false);
-
                 res.render('default', {
                     isLoged: false,
                     success: 0,
@@ -48,8 +35,18 @@ function validateLogin(req, res) {
     }
 }
 
+function getValues(req, res) {
+    res.render('default', {
+        isLoged: req.session.user != null,
+        user: req.session.user,
+        success: 0,
+        error: 0,
+        validations: 0
+    });
+}
+
 function logout(req, res) {
-    localStorage.clear()
+    req.session = null;
     res.render('default', {
         isLoged: false,
         success: 0,

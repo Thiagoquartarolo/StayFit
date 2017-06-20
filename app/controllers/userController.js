@@ -1,8 +1,5 @@
 const User = require('../models/user');
 const Def = require('../controllers/defaultController');
-const LocalStorage = require('node-localstorage').LocalStorage;
-const localStorage = LocalStorage('./scratch');
-
 
 module.exports = {
     getUsers: getUsers,
@@ -12,11 +9,8 @@ module.exports = {
 
 function getUsers(req, res) {
     try {
-        var isLoged = localStorage.getItem('isLoged');
-        var userLocalStorage = JSON.parse(localStorage.getItem('user'));
-
-        if (isLoged) {
-            User.find({}, (err, pacients) => {
+        if (req.session.user != null) {
+            User.find({ "terapeutId" : req.session.user._id }, (err, pacients) => {
                 if (err) {
                     res.status(500).send(err);
                     return;
@@ -24,8 +18,8 @@ function getUsers(req, res) {
 
                 res.render('pages/user/list', {
                     pacients: pacients,
-                    user: userLocalStorage,
-                    isLoged: isLoged,
+                    user: req.session.user,
+                    isLoged: true,
                     success: 0,
                     error: 0,
                     validations: 0
@@ -40,7 +34,6 @@ function getUsers(req, res) {
 
 function saveUser(req, res) {
     if (isValid) {
-        var userLocalStorage = JSON.parse(localStorage.getItem('user'));
 
         const user = new User({
             name: req.body.name,
@@ -48,7 +41,7 @@ function saveUser(req, res) {
             age: req.body.age,
             email: req.body.email,
             password: req.body.password,
-            terapeutId: userLocalStorage._id,
+            terapeutId: req.session.user._id,
             isAdmin: false,
         });
 
