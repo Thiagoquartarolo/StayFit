@@ -30,22 +30,26 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="" data-toggle="modal" data-target="#modalLogin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     </ul>
-                    <% }else if (isLoged && user.isAdmin){ %>
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listar<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="/users">Pacientes</a></li>
-                                    <li><a href="">Patologias</a></li>
-                                    <li><a href="">Cardapios</a></li>
-                                    <li><a href="">Grupos Alimentares</a></li>
+                <% }else if (isLoged && user.isAdmin){ %>
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Listar<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/users">Pacientes</a></li>
+                                <li><a href="">Patologias</a></li>
+                                <li><a href="">Cardapios</a></li>
+                                <li><a href="">Grupos Alimentares</a></li>
                                 </ul>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-                        </ul>
-                        <% } %>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                <% }else{ %>
+                    <ul class="nav navbar-nav navbar-right">
+                       <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                <% } %>
 
             </div>
         </nav>

@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../../domain/models/user');
 const Def = require('../controllers/defaultController');
 
 module.exports = {
