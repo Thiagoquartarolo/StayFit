@@ -1,27 +1,36 @@
 const User = require('../domain/models/user');
-const oauth = require('../domain/security/oauth');
+const bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
   create: create
 };
 
-function createUser(username, password, isResponsible) {
-  password = oauth.generateHash(password);
-  var user = new User({
-    username: username,
-    password: password,
-    isResponsible: !!isResponsible
-  });
+function createUser(name, lastname, age, email, password, isAdmin, isDev) {
 
-  user.save(function(err) {
-      if(err){
-        console.log('Não foi possível gerar o usuário: ' + username);
+  const user = new User(
+    {
+    
+      name: name,
+      lastname: lastname,
+      age: age,
+      email: email,
+      password: bcrypt.hashSync(password),
+      isAdmin: isAdmin,
+      isDev: isDev
+    }
+  );
+
+  User.remove({}, () => {
+    user.save(function (err) {
+      if (err) {
+        console.log('Não foi possível gerar o usuário: ' + name + '' + lastname);
       } else {
-        console.log('Usuário ' + username + ' criado com sucesso.');
+        console.log('Usuário ' + name + '' + lastname + ' criado com sucesso.');
       }
+    });
   });
 }
 
-function create(){
-  createUser('thiago.quartarolo@gmail.com', '123', true);
+function create() {
+  createUser('Thiago', 'Quartarolo', 32, 'thiagoquarta@hotmail.com', '123', true, true);
 }

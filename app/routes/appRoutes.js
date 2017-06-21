@@ -1,12 +1,17 @@
-var def = require('./defaultRoutes');
-var user = require('./userRoutes');
-var tenant = require('../../domain/security/tenant');
+const def = require('./loginRoutes');
+const user = require('./userRoutes');
+const seed = require('./seedRoutes');
+const tenant = require('../../domain/security/tenant');
 
 module.exports = function (app) {
 	//Public routes
 	app.use('/', def);
 
-	//Restrict routes
+	//Admin routes
 	app.use(tenant());
 	app.use('/', user);
+
+	//Dev routes
+	app.use(tenant());
+	app.use('/', seed);
 };

@@ -1,5 +1,5 @@
-var router = require('express').Router();
-var controller = require('../controllers/defaultController');
+const router = require('express').Router();
+const controller = require('../controllers/loginController');
 
 router.get('/', controller.getValues);
 router.post('/home', controller.validateLogin);

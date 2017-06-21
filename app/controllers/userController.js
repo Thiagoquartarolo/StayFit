@@ -1,11 +1,9 @@
 const User = require('../../domain/models/user');
-const Def = require('../controllers/defaultController');
 const bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
     getUsers: getUsers,
-    saveUser: saveUser,
-    seedUsers: seedUsers
+    saveUser: saveUser
 }
 
 function getUsers(req, res) {
@@ -61,32 +59,6 @@ function saveUser(req, res) {
     } catch (exception) {
         response.sendStatus(404);
     }
-}
-
-function seedUsers(req, res) {
-    // create some events
-    const users = [
-        { 
-            name: 'Thiago', 
-            lastname: 'Quartarolo', 
-            age: 32, 
-            email: 'thiagoquarta@hotmail.com', 
-            password: bcrypt.hashSync('123'), 
-            isAdmin: true, 
-            isDev: true 
-        }
-    ];
-
-    // use the Event model to insert/save
-    User.remove({}, () => {
-        for (user of users) {
-            var newUser = new User(user);
-            newUser.save();
-        }
-    });
-
-    //Seeded!
-    res.send('Database seeded!');
 }
 
 function isValid(req, res) {
