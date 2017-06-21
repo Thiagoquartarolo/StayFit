@@ -1,5 +1,6 @@
 const User = require('../../domain/models/user');
 const Def = require('../controllers/defaultController');
+const bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
     getUsers: getUsers,
@@ -10,7 +11,7 @@ module.exports = {
 function getUsers(req, res) {
     try {
         if (req.session.user != null) {
-            User.find({ "terapeutId" : req.session.user._id }, (err, pacients) => {
+            User.find({ "terapeutId": req.session.user._id }, (err, pacients) => {
                 if (err) {
                     res.status(500).send(err);
                     return;
@@ -33,32 +34,47 @@ function getUsers(req, res) {
 }
 
 function saveUser(req, res) {
-    if (isValid) {
+    try {
+        if (isValid) {
 
-        const user = new User({
-            name: req.body.name,
-            lastname: req.body.lastName,
-            age: req.body.age,
-            email: req.body.email,
-            password: req.body.password,
-            terapeutId: req.session.user._id,
-            isAdmin: false,
-        });
+            const user = new User({
+                name: req.body.name,
+                lastname: req.body.lastName,
+                age: req.body.age,
+                email: req.body.email,
+                password: bcrypt.hashSync(req.body.password),
+                terapeutId: req.session.user._id,
+                isAdmin: false,
+                isDev: false
+            });
 
-        user.save((err) => {
-            if (err)
-                throw err;
+            user.save((err) => {
+                if (err) {
+                    response.status(500).send(err);
+                    return;
+                }
 
-        });
+            });
 
-        res.redirect('/users');
+            res.redirect('/users');
+        }
+    } catch (exception) {
+        response.sendStatus(404);
     }
 }
 
 function seedUsers(req, res) {
     // create some events
     const users = [
-        { name: 'Thiago', lastname: 'Quartarolo', age: 32, email: 'thiagoquarta@hotmail.com', password: '123456', isAdmin: true }
+        { 
+            name: 'Thiago', 
+            lastname: 'Quartarolo', 
+            age: 32, 
+            email: 'thiagoquarta@hotmail.com', 
+            password: bcrypt.hashSync('123'), 
+            isAdmin: true, 
+            isDev: true 
+        }
     ];
 
     // use the Event model to insert/save

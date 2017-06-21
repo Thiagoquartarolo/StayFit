@@ -1,4 +1,5 @@
 const User = require('../../domain/models/user');
+const bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
     validateLogin: validateLogin,
@@ -7,30 +8,39 @@ module.exports = {
 }
 
 function validateLogin(req, res) {
-    
-    if (isValid(req, res)) {
+    try {
+        if (isValid(req, res)) {
 
-        User.findOne({
-            email: req.body.email,
-            password: req.body.password
-        }, (err, user) => {
-            if (user != null) {
-                req.session.user = user;
-                res.render('default', {
-                    isLoged: true,
-                    user: user,
-                    success: 0,
-                    error: 0,
-                    validations: 0
-                });
-            } else {
-                res.render('default', {
-                    isLoged: false,
-                    success: 0,
-                    error: 'Usuário não encontrado!',
-                    validations: 0
-                });
-            }
+            User.findOne({
+                email: req.body.email
+            }, (err, user) => {
+
+                if (user != null && bcrypt.compareSync(req.body.password, user.password)) {
+                    req.session.user = user;
+                    res.render('default', {
+                        isLoged: true,
+                        user: user,
+                        success: 0,
+                        error: 0,
+                        validations: 0
+                    });
+                } else {
+                    res.render('default', {
+                        isLoged: false,
+                        success: 0,
+                        error: 'Usuário/Senha inválidos!',
+                        validations: 0
+                    });
+                }
+
+            });
+        }
+    } catch (exception) {
+        res.render('default', {
+            isLoged: false,
+            success: 0,
+            error: 'Usuário não encontrado!',
+            validations: 0
         });
     }
 }
