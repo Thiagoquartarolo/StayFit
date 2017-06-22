@@ -8,10 +8,10 @@ module.exports = function (app) {
 	app.use('/', def);
 
 	//Admin routes
-	app.use(tenant());
+	app.use(tenant.isAdmin);
 	app.use('/', user);
 
 	//Dev routes
-	app.use(tenant());
+	app.use(tenant.isDev);
 	app.use('/', seed);
 };
